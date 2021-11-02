@@ -1,4 +1,3 @@
-DROP TABLE IF EXISTS passenger;
 CREATE TABLE passenger (
   id bigint NOT NULL,
   first_name varchar(45) NOT NULL,
@@ -10,7 +9,6 @@ CREATE TABLE passenger (
   PRIMARY KEY (id)
 );
 
-DROP TABLE IF EXISTS security_check;
 CREATE TABLE security_check (
   id bigint NOT NULL,
   check_results varchar(20) NOT NULL,
@@ -22,7 +20,6 @@ CREATE TABLE security_check (
   FOREIGN KEY (passenger_id) REFERENCES passenger (id)
 );
 
-DROP TABLE IF EXISTS no_fly_list;
 CREATE TABLE no_fly_list (
   id int NOT NULL,
   active_from date NOT NULL,
@@ -33,7 +30,6 @@ CREATE TABLE no_fly_list (
   FOREIGN KEY (passenger_id) REFERENCES passenger (id)
 );
 
-DROP TABLE IF EXISTS covid_certificate;
 CREATE TABLE covid_certificate (
   id int NOT NULL,
   code varchar(60) NOT NULL,
@@ -43,14 +39,12 @@ CREATE TABLE covid_certificate (
   FOREIGN KEY (passenger_id) REFERENCES passenger (id)
 );
 
-DROP TABLE IF EXISTS boarding_pass;
 CREATE TABLE boarding_pass (
   id int NOT NULL,
   code varchar(20) NOT NULL,
   PRIMARY KEY (id)
 );
 
-DROP TABLE IF EXISTS booking;
 CREATE TABLE booking (
   id int NOT NULL,
   status varchar(20) NOT NULL,
@@ -64,7 +58,6 @@ CREATE TABLE booking (
   FOREIGN KEY (passenger_id) REFERENCES passenger (id)
 );
 
-DROP TABLE IF EXISTS baggage;
 CREATE TABLE baggage (
   id int NOT NULL,
   weight_in_kg decimal(4,2) NOT NULL,
@@ -74,7 +67,6 @@ CREATE TABLE baggage (
   REFERENCES booking (id)
 );
 
-DROP TABLE IF EXISTS baggage_check;
 CREATE TABLE baggage_check (
   id bigint NOT NULL,
   check_result varchar(20) NOT NULL,
@@ -84,7 +76,6 @@ CREATE TABLE baggage_check (
   FOREIGN KEY (baggage_id) REFERENCES baggage (id)
 );
 
-DROP TABLE IF EXISTS airport;
 CREATE TABLE airport (
   id int NOT NULL,
   name varchar(100),
@@ -94,7 +85,6 @@ CREATE TABLE airport (
   PRIMARY KEY (id)
 );
 
-DROP TABLE IF EXISTS airline;
 CREATE TABLE airline (
   id int NOT NULL,
   code varchar(20) NOT NULL,
@@ -103,7 +93,6 @@ CREATE TABLE airline (
   PRIMARY KEY (id)
 );
 
-DROP TABLE IF EXISTS flights;
 CREATE TABLE flights (
   id int NOT NULL,
   departing_gate varchar(20) NOT NULL,
@@ -117,7 +106,6 @@ CREATE TABLE flights (
   FOREIGN KEY (arriving_airport_id) REFERENCES airport (id)
 );
 
-DROP TABLE IF EXISTS booking_has_flights;
 CREATE TABLE booking_has_flights (
   booking_id int NOT NULL,
   flights_id int NOT NULL,
