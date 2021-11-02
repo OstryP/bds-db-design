@@ -1,0 +1,114 @@
+CREATE TABLE passenger (
+  id bigint NOT NULL,
+  first_name varchar(45) NOT NULL,
+  last_name varchar(45) NOT NULL,
+  date_of_birth date NOT NULL,
+  country_of_citizenship varchar(45) NOT NULL,
+  country_of_residence varchar(45) NOT NULL,
+  passport_number varchar(20) NOT NULL,
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE security_check (
+  id bigint NOT NULL,
+  check_results varchar(20) NOT NULL,
+  comments varchar(500),
+  created_at timestamp NOT NULL,
+  updated_at timestamp NOT NULL,
+  passenger_id bigint NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (passenger_id) REFERENCES passenger (id)
+);
+
+CREATE TABLE no_fly_list (
+  id int NOT NULL,
+  active_from date NOT NULL,
+  active_to date NOT NULL,
+  no_fly_reason varchar(500),
+  passenger_id bigint NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (passenger_id) REFERENCES passenger (id)
+);
+
+CREATE TABLE covid_certificate (
+  id int NOT NULL,
+  code varchar(60) NOT NULL,
+  valid varchar(20) NOT NULL,
+  passenger_id bigint NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (passenger_id) REFERENCES passenger (id)
+);
+
+CREATE TABLE boarding_pass (
+  id int NOT NULL,
+  code varchar(20) NOT NULL,
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE booking (
+  id int NOT NULL,
+  status varchar(20) NOT NULL,
+  booking_platform varchar(45),
+  created_at timestamp NOT NULL,
+  updated_at timestamp NOT NULL,
+  passenger_id bigint NOT NULL,
+  boarding_pass_id int NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (boarding_pass_id) REFERENCES boarding_pass (id),
+  FOREIGN KEY (passenger_id) REFERENCES passenger (id)
+);
+
+CREATE TABLE baggage (
+  id int NOT NULL,
+  weight_in_kg decimal(4,2) NOT NULL,
+  booking_id int NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (booking_id) 
+  REFERENCES booking (id)
+);
+
+CREATE TABLE baggage_check (
+  id bigint NOT NULL,
+  check_result varchar(20) NOT NULL,
+  comments varchar(500),
+  baggage_id int NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (baggage_id) REFERENCES baggage (id)
+);
+
+CREATE TABLE airport (
+  id int NOT NULL,
+  name varchar(100),
+  country varchar(45),
+  state varchar(45),
+  city varchar(45),
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE airline (
+  id int NOT NULL,
+  code varchar(20) NOT NULL,
+  name varchar(45),
+  country varchar(45),
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE flights (
+  id int NOT NULL,
+  departing_gate varchar(20) NOT NULL,
+  arriving_gate varchar(20) NOT NULL,
+  departing_airport_id int NOT NULL,
+  arriving_airport_id int NOT NULL,
+  airline_id int NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (airline_id) REFERENCES airline (id),
+  FOREIGN KEY (departing_airport_id) REFERENCES airport (id),
+  FOREIGN KEY (arriving_airport_id) REFERENCES airport (id)
+);
+
+CREATE TABLE booking_has_flights (
+  booking_id int NOT NULL,
+  flights_id int NOT NULL,
+  FOREIGN KEY (booking_id) REFERENCES booking (id),
+  FOREIGN KEY (flights_id) REFERENCES flights (id)
+);
